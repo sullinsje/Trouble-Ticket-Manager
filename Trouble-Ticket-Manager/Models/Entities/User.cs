@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Trouble_Ticket_Manager.Models.Entities
 {
     public class User
@@ -7,6 +9,7 @@ namespace Trouble_Ticket_Manager.Models.Entities
         public string Email { get; set; } = string.Empty;
         public string? Building { get; set; }
         public string? Room { get; set; }
+        [JsonIgnore]
         public ICollection<Computer> Computers { get; set; } = new List<Computer>();
     }
 }
