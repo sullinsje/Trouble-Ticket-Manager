@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Trouble_Ticket_Manager.Models.Entities
 {
@@ -9,7 +10,9 @@ namespace Trouble_Ticket_Manager.Models.Entities
         public string IssueDescription { get; set; } = string.Empty;
         public int TicketId { get; set; }
         public int ComputerId { get; set; }
+        [JsonIgnore]
         public Ticket? Ticket { get; set; }
+        [JsonIgnore]
         public Computer? Computer { get; set; }
     }
 }

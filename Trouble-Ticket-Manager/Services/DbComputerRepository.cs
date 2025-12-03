@@ -6,9 +6,11 @@ namespace Trouble_Ticket_Manager.Services
     public class DbComputerRepository : IComputerRepository
     {
         private readonly ApplicationDbContext _db;
-        public DbComputerRepository(ApplicationDbContext db)
+        private readonly IUserRepository _userRepo;
+        public DbComputerRepository(ApplicationDbContext db, IUserRepository userRepo)
         {
             _db = db;
+            _userRepo = userRepo;
         }
 
         public async Task<Computer> CreateAsync(Computer newComputer)
@@ -18,9 +20,14 @@ namespace Trouble_Ticket_Manager.Services
             return newComputer;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var computerToDelete = await ReadAsync(id);
+            if (computerToDelete != null)
+            {
+                _db.Computers.Remove(computerToDelete);
+                await _db.SaveChangesAsync();
+            }
         }
 
         public async Task<ICollection<Computer>> ReadAllAsync()
@@ -30,14 +37,23 @@ namespace Trouble_Ticket_Manager.Services
                 .ToListAsync();
         }
 
-        public Task<Computer?> ReadAsync(int id)
+        public async Task<Computer?> ReadAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Computers.Include(c => c.User).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task UpdateAsync(int id, Computer computer)
+        public async Task UpdateAsync(int id, Computer computer)
         {
-            throw new NotImplementedException();
+            var existingComputer = await ReadAsync(id);
+            if (existingComputer != null)
+            {
+                existingComputer.AssetTag = computer.AssetTag;
+                existingComputer.ServiceTag = computer.ServiceTag;
+                existingComputer.Model = computer.Model;
+                existingComputer.UserId = computer.UserId;
+
+                await _db.SaveChangesAsync();
+            }
         }
     }
 }

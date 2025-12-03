@@ -1,26 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
-using Trouble_Ticket_Manager.Models.Entities;
 using Trouble_Ticket_Manager.Services;
+using Trouble_Ticket_Manager.Models.Entities;
 
 namespace Trouble_Ticket_Manager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ComputerAPIController : ControllerBase
+    public class TicketAPIController : ControllerBase
     {
-        private readonly IComputerRepository _computerRepo;
+        private readonly ITicketRepository _ticketRepo;
 
-        public ComputerAPIController(IComputerRepository computerRepo)
+        public TicketAPIController(ITicketRepository ticketRepo)
         {
-            _computerRepo = computerRepo;
+            _ticketRepo = ticketRepo;
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(Computer newComputer)
+        public async Task<IActionResult> Create(Ticket newTicket)
         {
             if (ModelState.IsValid)
             {
-                await _computerRepo.CreateAsync(newComputer);
+                await _ticketRepo.CreateAsync(newTicket);
                 return Ok();
             }
             return NotFound();
@@ -29,32 +29,32 @@ namespace Trouble_Ticket_Manager.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
-            var computers = await _computerRepo.ReadAllAsync();
-            return Ok(computers);
+            var tickets = await _ticketRepo.ReadAllDtoAsync();
+            return Ok(tickets);
         }
 
         [HttpGet("one/{id}")]
         public async Task<IActionResult> GetOne(int id)
         {
-            var computer = await _computerRepo.ReadAsync(id);
-            if (computer == null)
+            var ticket = await _ticketRepo.ReadAsync(id);
+            if (ticket == null)
             {
                 return NotFound();
             }
-            return Ok(computer);
+            return Ok(ticket);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Update([FromForm] Computer computer)
+        public async Task<IActionResult> Update([FromForm] Ticket ticket)
         {
-            await _computerRepo.UpdateAsync(computer.Id, computer);
+            await _ticketRepo.UpdateAsync(ticket.Id, ticket);
             return NoContent(); // 204 as per HTTP specification
         }
 
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _computerRepo.DeleteAsync(id);
+            await _ticketRepo.DeleteAsync(id);
             return NoContent(); // 204 as per HTTP specification
         }
     }

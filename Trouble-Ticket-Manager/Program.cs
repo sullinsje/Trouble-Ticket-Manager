@@ -12,6 +12,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 builder.Services.AddScoped<IComputerRepository, DbComputerRepository>();
+builder.Services.AddScoped<ITicketRepository, DbTicketRepository>();
+builder.Services.AddScoped<IUserRepository, DbUserRepository>();
 builder.Services.AddScoped<Initializer>();
 
 builder.Services.AddEndpointsApiExplorer();

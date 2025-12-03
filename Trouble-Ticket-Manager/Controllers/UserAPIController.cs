@@ -6,21 +6,21 @@ namespace Trouble_Ticket_Manager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ComputerAPIController : ControllerBase
+    public class UserAPIController : ControllerBase
     {
-        private readonly IComputerRepository _computerRepo;
+        private readonly IUserRepository _userRepo;
 
-        public ComputerAPIController(IComputerRepository computerRepo)
+        public UserAPIController(IUserRepository userRepo)
         {
-            _computerRepo = computerRepo;
+            _userRepo = userRepo;
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(Computer newComputer)
+        public async Task<IActionResult> Create(User newUser)
         {
             if (ModelState.IsValid)
             {
-                await _computerRepo.CreateAsync(newComputer);
+                await _userRepo.CreateAsync(newUser);
                 return Ok();
             }
             return NotFound();
@@ -29,32 +29,32 @@ namespace Trouble_Ticket_Manager.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
-            var computers = await _computerRepo.ReadAllAsync();
-            return Ok(computers);
+            var users = await _userRepo.ReadAllAsync();
+            return Ok(users);
         }
 
         [HttpGet("one/{id}")]
         public async Task<IActionResult> GetOne(int id)
         {
-            var computer = await _computerRepo.ReadAsync(id);
-            if (computer == null)
+            var user = await _userRepo.ReadAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            return Ok(computer);
+            return Ok(user);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Update([FromForm] Computer computer)
+        public async Task<IActionResult> Update([FromForm] User user)
         {
-            await _computerRepo.UpdateAsync(computer.Id, computer);
+            await _userRepo.UpdateAsync(user.Id, user);
             return NoContent(); // 204 as per HTTP specification
         }
 
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _computerRepo.DeleteAsync(id);
+            await _userRepo.DeleteAsync(id);
             return NoContent(); // 204 as per HTTP specification
         }
     }

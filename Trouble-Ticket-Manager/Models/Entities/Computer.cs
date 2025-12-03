@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Trouble_Ticket_Manager.Models.Entities
 {
@@ -12,7 +13,7 @@ namespace Trouble_Ticket_Manager.Models.Entities
         public string Model { get; set; } = string.Empty;
         public int? UserId { get; set; }
         public User? User { get; set; }
-        public ICollection<TicketComputer> TicketComputers { get; set; } 
+        public ICollection<TicketComputer> TicketComputers { get; set; }
             = new List<TicketComputer>();
     }
 }
