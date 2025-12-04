@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.AssetTag)
             </th>
             <th>
@@ -34,32 +31,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssetTag)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ServiceTag)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnderWarranty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssetTag)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServiceTag)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnderWarranty)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    <a asp-controller="Computer" asp-action="Edit" asp-route-assetTag="@item.AssetTag">
+                        Edit
+                    </a> |
+                    <a asp-controller="Computer" asp-action="Details" asp-route-assetTag="@item.AssetTag">
+                        Details
+                    </a> |
+                    <a asp-controller="Computer" asp-action="Delete" asp-route-assetTag="@item.AssetTag">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

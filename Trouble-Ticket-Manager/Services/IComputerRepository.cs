@@ -5,9 +5,9 @@ namespace Trouble_Ticket_Manager.Services
     public interface IComputerRepository
     {
         Task<ICollection<Computer>> ReadAllAsync();
-        Task<Computer?> ReadAsync(int id);
+        Task<Computer?> ReadAsync(string assetTag);
         Task<Computer> CreateAsync(Computer newComputer);
-        Task UpdateAsync(int id, Computer computer);
-        Task DeleteAsync(int id);
+        Task UpdateAsync(string assetTag, Computer computer);
+        Task DeleteAsync(string assetTag);
     }
 }

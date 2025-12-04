@@ -21,9 +21,9 @@ namespace Trouble_Ticket_Manager.Services
             return newComputer;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string assetTag)
         {
-            var computerToDelete = await ReadAsync(id);
+            var computerToDelete = await ReadAsync(assetTag);
             if (computerToDelete != null)
             {
                 _db.Computers.Remove(computerToDelete);
@@ -39,17 +39,17 @@ namespace Trouble_Ticket_Manager.Services
                 .ToListAsync();
         }
 
-        public async Task<Computer?> ReadAsync(int id)
+        public async Task<Computer?> ReadAsync(string assetTag)
         {
             return await _db.Computers
                 .Include(c => c.User)
                 .Include(c => c.TicketComputers)
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.AssetTag == assetTag);
         }
 
-        public async Task UpdateAsync(int id, Computer computer)
+        public async Task UpdateAsync(string assetTag, Computer computer)
         {
-            var existingComputer = await ReadAsync(id);
+            var existingComputer = await ReadAsync(assetTag);
             if (existingComputer != null)
             {
                 existingComputer.AssetTag = computer.AssetTag;

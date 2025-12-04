@@ -8,8 +8,10 @@ html {
   }
 }
 
+/* Updated Focus Ring Color to Ubuntu Orange */
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  /* Retaining the inner white ring for contrast */
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #E95420; /* Ubuntu Orange */
 }
 
 html {
@@ -22,6 +24,7 @@ body {
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  /* Keeping the placeholder color defined by the --bs-secondary-color variable */
   color: var(--bs-secondary-color);
   text-align: end;
 }
@@ -29,3 +32,68 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Ubuntu-inspired Colors */
+
+/* Key Colors:
+   * Ubuntu Orange: #E95420
+   * Ubuntu Aubergine (Purple): #77216F
+   * White: #fff (for text on dark/colored backgrounds)
+*/
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* General Link Color - Using Ubuntu Orange */
+a {
+  color: #E95420; /* Ubuntu Orange */
+}
+
+/* Primary Button Color - Using a deep Orange/Red */
+.btn-primary {
+  color: #fff;
+  background-color: #E95420; /* Ubuntu Orange */
+  border-color: #CC4B1F; /* A slightly darker orange for border */
+}
+
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #AA4B1F; /* Darker Orange on hover */
+  border-color: #B0431C; /* Even darker for border on hover */
+}
+
+/* Active Nav Link/Pill - Using Ubuntu Aubergine (Purple) */
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #77216F; /* Ubuntu Aubergine */
+  border-color: #5E1A5A; /* A slightly darker purple for border */
+}
+
+.border-top {
+  border-top: 1px solid #dcdcdc; /* Lighter grey */
+}
+.border-bottom {
+  border-bottom: 1px solid #dcdcdc; /* Lighter grey */
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+

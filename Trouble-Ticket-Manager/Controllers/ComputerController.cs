@@ -23,4 +23,30 @@ public class ComputerController : Controller
         return View();
     }
 
+    public async Task<IActionResult> Details(string assetTag)
+    {
+        var computer = await _computerRepo.ReadAsync(assetTag);
+        if (computer == null)
+        {
+            return NotFound();
+        }
+        return View(computer);
+    }
+
+    [HttpGet("Computer/Edit/{assetTag}")]
+    public async Task<IActionResult> Edit(string assetTag)
+    {
+        var computer = await _computerRepo.ReadAsync(assetTag);
+        if (computer == null)
+        {
+            return NotFound();
+        }
+        return View(computer);
+    }
+
+    public async Task<IActionResult> Delete(string assetTag)
+    {
+        return View();
+    }
+
 }

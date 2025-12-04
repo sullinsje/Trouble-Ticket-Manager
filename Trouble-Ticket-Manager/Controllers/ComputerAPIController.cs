@@ -33,10 +33,10 @@ namespace Trouble_Ticket_Manager.Controllers
             return Ok(computers);
         }
 
-        [HttpGet("one/{id}")]
-        public async Task<IActionResult> GetOne(int id)
+        [HttpGet("one/{assetTag}")]
+        public async Task<IActionResult> GetOne(string assetTag)
         {
-            var computer = await _computerRepo.ReadAsync(id);
+            var computer = await _computerRepo.ReadAsync(assetTag);
             if (computer == null)
             {
                 return NotFound();
@@ -47,14 +47,14 @@ namespace Trouble_Ticket_Manager.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromForm] Computer computer)
         {
-            await _computerRepo.UpdateAsync(computer.Id, computer);
+            await _computerRepo.UpdateAsync(computer.AssetTag, computer);
             return NoContent(); // 204 as per HTTP specification
         }
 
-        [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("delete/{assetTag}")]
+        public async Task<IActionResult> Delete(string assetTag)
         {
-            await _computerRepo.DeleteAsync(id);
+            await _computerRepo.DeleteAsync(assetTag);
             return NoContent(); // 204 as per HTTP specification
         }
     }

@@ -1,5 +1,10 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿/* Ubuntu-inspired Colors */
+
+/* Key Colors:
+   * Ubuntu Orange: #E95420
+   * Ubuntu Aubergine (Purple): #77216F
+   * White: #fff (for text on dark/colored backgrounds)
+*/
 
 a.navbar-brand {
   white-space: normal;
@@ -7,27 +12,30 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+/* General Link Color - Using Ubuntu Orange */
 a {
-  color: #0077cc;
+  color: #E95420; /* Ubuntu Orange */
 }
 
+/* Primary Button Color - Using a deep Orange/Red */
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #E95420; /* Ubuntu Orange */
+  border-color: #CC4B1F; /* A slightly darker orange for border */
 }
 
+/* Active Nav Link/Pill - Using Ubuntu Aubergine (Purple) */
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #77216F; /* Ubuntu Aubergine */
+  border-color: #5E1A5A; /* A slightly darker purple for border */
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #dcdcdc; /* Lighter grey */
 }
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #dcdcdc; /* Lighter grey */
 }
 
 .box-shadow {

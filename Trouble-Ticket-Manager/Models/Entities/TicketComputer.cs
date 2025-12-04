@@ -9,7 +9,7 @@ namespace Trouble_Ticket_Manager.Models.Entities
         [Required]
         public string IssueDescription { get; set; } = string.Empty;
         public int TicketId { get; set; }
-        public int ComputerId { get; set; }
+        public string ComputerAssetTag { get; set; } = string.Empty;
         [JsonIgnore]
         public Ticket? Ticket { get; set; }
         [JsonIgnore]

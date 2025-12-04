@@ -31,7 +31,7 @@ public class Initializer
         // Seed Computers
         var compA = new Computer
         {
-            AssetTag = "TKT001",
+            AssetTag = "000000",
             ServiceTag = "SV12345",
             Model = "Dell XPS 13",
             User = user1,
@@ -39,7 +39,7 @@ public class Initializer
         };
         var compB = new Computer
         {
-            AssetTag = "TKT002",
+            AssetTag = "000001",
             ServiceTag = "SV67890",
             Model = "HP ProBook",
             User = user2,

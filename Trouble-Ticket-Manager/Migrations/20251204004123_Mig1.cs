@@ -31,16 +31,15 @@ namespace Trouble_Ticket_Manager.Migrations
                 name: "Computers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
                     AssetTag = table.Column<string>(type: "TEXT", maxLength: 6, nullable: false),
                     ServiceTag = table.Column<string>(type: "TEXT", maxLength: 7, nullable: false),
                     Model = table.Column<string>(type: "TEXT", nullable: false),
+                    UnderWarranty = table.Column<bool>(type: "INTEGER", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Computers", x => x.Id);
+                    table.PrimaryKey("PK_Computers", x => x.AssetTag);
                     table.ForeignKey(
                         name: "FK_Computers_Users_UserId",
                         column: x => x.UserId,
@@ -79,16 +78,16 @@ namespace Trouble_Ticket_Manager.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     IssueDescription = table.Column<string>(type: "TEXT", nullable: false),
                     TicketId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ComputerId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ComputerAssetTag = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TicketComputers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TicketComputers_Computers_ComputerId",
-                        column: x => x.ComputerId,
+                        name: "FK_TicketComputers_Computers_ComputerAssetTag",
+                        column: x => x.ComputerAssetTag,
                         principalTable: "Computers",
-                        principalColumn: "Id",
+                        principalColumn: "AssetTag",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TicketComputers_Tickets_TicketId",
@@ -104,9 +103,9 @@ namespace Trouble_Ticket_Manager.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TicketComputers_ComputerId",
+                name: "IX_TicketComputers_ComputerAssetTag",
                 table: "TicketComputers",
-                column: "ComputerId");
+                column: "ComputerAssetTag");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TicketComputers_TicketId",

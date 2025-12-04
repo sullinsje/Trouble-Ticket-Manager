@@ -11,8 +11,8 @@ using Trouble_Ticket_Manager.Services;
 namespace Trouble_Ticket_Manager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251203203816_WarrantyColumn1")]
-    partial class WarrantyColumn1
+    [Migration("20251204004123_Mig1")]
+    partial class Mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,12 +22,7 @@ namespace Trouble_Ticket_Manager.Migrations
 
             modelBuilder.Entity("Trouble_Ticket_Manager.Models.Entities.Computer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("AssetTag")
-                        .IsRequired()
                         .HasMaxLength(6)
                         .HasColumnType("TEXT");
 
@@ -46,7 +41,7 @@ namespace Trouble_Ticket_Manager.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("AssetTag");
 
                     b.HasIndex("UserId");
 
@@ -84,8 +79,9 @@ namespace Trouble_Ticket_Manager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ComputerId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ComputerAssetTag")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("IssueDescription")
                         .IsRequired()
@@ -96,7 +92,7 @@ namespace Trouble_Ticket_Manager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ComputerId");
+                    b.HasIndex("ComputerAssetTag");
 
                     b.HasIndex("TicketId");
 
@@ -153,7 +149,7 @@ namespace Trouble_Ticket_Manager.Migrations
                 {
                     b.HasOne("Trouble_Ticket_Manager.Models.Entities.Computer", "Computer")
                         .WithMany("TicketComputers")
-                        .HasForeignKey("ComputerId")
+                        .HasForeignKey("ComputerAssetTag")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

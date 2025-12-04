@@ -82,9 +82,9 @@ namespace Trouble_Ticket_Manager.Services
                         // Assign join table properties here if any...
                         Computer = new ComputerDTO
                         {
-                            Id = tc.Computer!.Id,
-                            AssetTag = tc.Computer.AssetTag,
-                            Model = tc.Computer.Model
+                            AssetTag = tc.Computer!.AssetTag,
+                            Model = tc.Computer.Model,
+                            UnderWarranty = tc.Computer.UnderWarranty
                         }
                     }).ToList()
                 })

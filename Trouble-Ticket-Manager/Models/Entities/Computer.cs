@@ -4,7 +4,7 @@ namespace Trouble_Ticket_Manager.Models.Entities
 {
     public class Computer
     {
-        public int Id { get; set; }
+        [Key]
         [StringLength(6)]
         public string AssetTag { get; set; } = string.Empty;
         [StringLength(7)]
