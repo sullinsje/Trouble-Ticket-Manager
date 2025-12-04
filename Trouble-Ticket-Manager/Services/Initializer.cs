@@ -1,4 +1,5 @@
 ﻿using Trouble_Ticket_Manager.Models.Entities;
+// using Trouble_Ticket_Manager.Services;
 
 namespace Trouble_Ticket_Manager.Services;
 
@@ -33,14 +34,16 @@ public class Initializer
             AssetTag = "TKT001",
             ServiceTag = "SV12345",
             Model = "Dell XPS 13",
-            User = user1
+            User = user1,
+            UnderWarranty = MockWarrantyChecker.GetMockWarranty("SV12345")
         };
         var compB = new Computer
         {
             AssetTag = "TKT002",
             ServiceTag = "SV67890",
             Model = "HP ProBook",
-            User = user2
+            User = user2,
+            UnderWarranty = MockWarrantyChecker.GetMockWarranty("SV67890")
         };
 
         await _db.Computers.AddRangeAsync(compA, compB);

@@ -16,7 +16,7 @@ namespace Trouble_Ticket_Manager.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(Computer newComputer)
+        public async Task<IActionResult> Create([FromForm] Computer newComputer)
         {
             if (ModelState.IsValid)
             {

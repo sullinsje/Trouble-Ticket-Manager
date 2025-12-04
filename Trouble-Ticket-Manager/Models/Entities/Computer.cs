@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Trouble_Ticket_Manager.Models.Entities
 {
@@ -11,6 +10,7 @@ namespace Trouble_Ticket_Manager.Models.Entities
         [StringLength(7)]
         public string ServiceTag { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
+        public bool UnderWarranty { get; set; }
         public int? UserId { get; set; }
         public User? User { get; set; }
         public ICollection<TicketComputer> TicketComputers { get; set; }

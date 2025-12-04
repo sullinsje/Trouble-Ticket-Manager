@@ -15,6 +15,7 @@ namespace Trouble_Ticket_Manager.Services
 
         public async Task<Computer> CreateAsync(Computer newComputer)
         {
+            newComputer.UnderWarranty = MockWarrantyChecker.GetMockWarranty(newComputer.ServiceTag);
             await _db.Computers.AddAsync(newComputer);
             await _db.SaveChangesAsync();
             return newComputer;
@@ -33,13 +34,17 @@ namespace Trouble_Ticket_Manager.Services
         public async Task<ICollection<Computer>> ReadAllAsync()
         {
             return await _db.Computers
+                .Include(c => c.TicketComputers)
                 .Include(c => c.User)
                 .ToListAsync();
         }
 
         public async Task<Computer?> ReadAsync(int id)
         {
-            return await _db.Computers.Include(c => c.User).FirstOrDefaultAsync(c => c.Id == id);
+            return await _db.Computers
+                .Include(c => c.User)
+                .Include(c => c.TicketComputers)
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task UpdateAsync(int id, Computer computer)
@@ -51,6 +56,7 @@ namespace Trouble_Ticket_Manager.Services
                 existingComputer.ServiceTag = computer.ServiceTag;
                 existingComputer.Model = computer.Model;
                 existingComputer.UserId = computer.UserId;
+                existingComputer.UnderWarranty = computer.UnderWarranty;
 
                 await _db.SaveChangesAsync();
             }

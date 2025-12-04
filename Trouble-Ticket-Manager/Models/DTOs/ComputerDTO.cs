@@ -11,5 +11,6 @@ namespace Trouble_Ticket_Manager.Models.DTOs
         public string AssetTag { get; set; } = string.Empty;
         public string ServiceTag { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
+        public bool UnderWarranty { get; set; }
     }
 }
