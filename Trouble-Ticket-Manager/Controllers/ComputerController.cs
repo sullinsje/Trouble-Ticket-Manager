@@ -22,6 +22,7 @@ public class ComputerController : Controller
         return View();
     }
 
+    [HttpGet("Computer/Details/{assetTag}")]
     public async Task<IActionResult> Details(string assetTag)
     {
         var computer = await _computerRepo.ReadAsync(assetTag);

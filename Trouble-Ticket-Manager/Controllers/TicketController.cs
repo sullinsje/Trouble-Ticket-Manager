@@ -14,8 +14,7 @@ public class TicketController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        var tickets = await _ticketRepo.ReadAllAsync();
-        return View(tickets);
+        return View();
     }
 
     public IActionResult Create()

@@ -31,6 +31,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             userIdCell.textContent = computer.userId;
             row.appendChild(userIdCell);
 
+            const actionCell = document.createElement('td');
+
+            const detailsLink = document.createElement('a');
+            detailsLink.setAttribute('href', `/Computer/Details/${computer.assetTag}`);
+            detailsLink.classList.add('btn', 'btn-info', 'btn-sm', 'me-1');
+            detailsLink.textContent = 'Details';
+
+            const editLink = document.createElement('a');
+            editLink.setAttribute('href', `/Computer/Edit/${computer.assetTag}`);
+            editLink.classList.add('btn', 'btn-warning', 'btn-sm', 'me-1');
+            editLink.textContent = 'Edit';
+
+            const deleteLink = document.createElement('a');
+            deleteLink.setAttribute('href', `/Computer/Delete/${computer.assetTag}`);
+            deleteLink.classList.add('btn', 'btn-danger', 'btn-sm', 'me-1');
+            deleteLink.textContent = 'Delete';
+
+            actionCell.appendChild(detailsLink);
+            actionCell.appendChild(editLink);
+            actionCell.appendChild(deleteLink);
+            row.appendChild(actionCell);
+
             tableBody.appendChild(row);
         });
     } catch (error) {

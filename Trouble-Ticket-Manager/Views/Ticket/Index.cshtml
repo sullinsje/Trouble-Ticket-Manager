@@ -1,5 +1,3 @@
-@model IEnumerable<Trouble_Ticket_Manager.Models.Entities.Ticket>
-
 @{
     ViewData["Title"] = "Index";
 }
@@ -12,55 +10,17 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContactId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SubmittedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsResolved)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ChargerGiven)
-            </th>
-            <th></th>
+            <th> ID </th>
+            <th> Contact Name </th>
+            <th> Date Submitted </th>
+            <th> Resolved </th>
+            <th> Charger </th>
+            <th> Actions </th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ContactId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SubmittedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsResolved)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ChargerGiven)
-                </td>
-                <td>
-                    <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@item.Id">
-                        Edit
-                    </a> |
-                    <a asp-controller="Ticket" asp-action="Details" asp-route-id="@item.Id">
-                        Details
-                    </a> |
-                    <a asp-controller="Ticket" asp-action="Delete" asp-route-id="@item.Id">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
+    <tbody id="ticket-table-body"></tbody>
 </table>
+
+@section Scripts {
+    <script type="module" src="~/js/ticketIndex.js"></script>
+}
