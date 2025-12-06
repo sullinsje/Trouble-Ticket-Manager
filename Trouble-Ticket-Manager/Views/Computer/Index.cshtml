@@ -1,5 +1,3 @@
-@model IEnumerable<Trouble_Ticket_Manager.Models.Entities.Computer>
-
 @{
     ViewData["Title"] = "Index";
 }
@@ -12,55 +10,17 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AssetTag)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ServiceTag)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnderWarranty)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th></th>
+            <th> Asset Tag </th>
+            <th> Service Tag </th>
+            <th> Model </th>
+            <th> Under Warranty </th>
+            <th> User Id </th>
+            <th> Actions </th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AssetTag)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ServiceTag)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Model)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UnderWarranty)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    <a asp-controller="Computer" asp-action="Edit" asp-route-assetTag="@item.AssetTag">
-                        Edit
-                    </a> |
-                    <a asp-controller="Computer" asp-action="Details" asp-route-assetTag="@item.AssetTag">
-                        Details
-                    </a> |
-                    <a asp-controller="Computer" asp-action="Delete" asp-route-assetTag="@item.AssetTag">
-                        Delete
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
+    <tbody id="computer-table-body"></tbody>
 </table>
+
+@section Scripts {
+    <script type="module" src="~/js/computerIndex.js"></script>
+}

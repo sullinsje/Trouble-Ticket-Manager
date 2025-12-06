@@ -14,8 +14,7 @@ public class ComputerController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        var computers = await _computerRepo.ReadAllAsync();
-        return View(computers);
+        return View();
     }
 
     public IActionResult Create()
