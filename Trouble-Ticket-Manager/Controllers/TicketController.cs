@@ -1,6 +1,7 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Trouble_Ticket_Manager.Models;
+using Trouble_Ticket_Manager.Models.DTOs;
+using Trouble_Ticket_Manager.Models.ViewModels;
 using Trouble_Ticket_Manager.Services;
 
 namespace Trouble_Ticket_Manager.Controllers;
@@ -19,7 +20,8 @@ public class TicketController : Controller
 
     public IActionResult Create()
     {
-        return View();
+        var model = new TicketVM();
+        return View(model);
     }
 
     public async Task<IActionResult> Details(int id)

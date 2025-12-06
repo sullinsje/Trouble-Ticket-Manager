@@ -16,7 +16,7 @@ namespace Trouble_Ticket_Manager.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(Ticket newTicket)
+        public async Task<IActionResult> Create([FromForm] Ticket newTicket)
         {
             if (ModelState.IsValid)
             {
@@ -36,7 +36,7 @@ namespace Trouble_Ticket_Manager.Controllers
         [HttpGet("one/{id}")]
         public async Task<IActionResult> GetOne(int id)
         {
-            var ticket = await _ticketRepo.ReadAsync(id);
+            var ticket = await _ticketRepo.ReadDtoAsync(id);
             if (ticket == null)
             {
                 return NotFound();

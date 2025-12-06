@@ -1,4 +1,5 @@
-@model Trouble_Ticket_Manager.Models.Entities.Ticket
+@using Trouble_Ticket_Manager.Models.ViewModels
+@model TicketVM
 
 @{
     ViewData["Title"] = "Create";
@@ -10,31 +11,39 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-controller="TicketAPI" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
+                <label asp-for="ContactName" class="control-label">Contact</label>
+
+                <select asp-for="ContactName" class="form-control" id="contact-name-dropdown">
+                    <option value="">-- Loading Contacts --</option>
+                </select>
+
+                <span asp-validation-for="ContactName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ContactId" class="control-label"></label>
-                <input asp-for="ContactId" class="form-control" />
-                <span asp-validation-for="ContactId" class="text-danger"></span>
+                <label asp-for="AssetTag" class="control-label">Asset Tag</label>
+
+                <select asp-for="AssetTag" class="form-control" id="asset-tag-dropdown">
+                    <option value="">-- Loading Computers --</option>
+                </select>
+
+                <span asp-validation-for="AssetTag" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SubmittedAt" class="control-label"></label>
+                <label asp-for="SubmittedAt" class="control-label">Submission Date</label>
                 <input asp-for="SubmittedAt" class="form-control" />
                 <span asp-validation-for="SubmittedAt" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="IsResolved" class="control-label"></label>
-                <input asp-for="IsResolved" class="form-control" />
+            <div class="form-group form-check">
+                <label asp-for="IsResolved" class="form-check-label">Resolved?</label>
+                <input asp-for="IsResolved" class="form-check-input" />
                 <span asp-validation-for="IsResolved" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ChargerGiven" class="control-label"></label>
-                <input asp-for="ChargerGiven" class="form-control" />
+            <div class="form-group form-check">
+                <label asp-for="ChargerGiven" class="form-check-label">Charger Provided?</label>
+                <input asp-for="ChargerGiven" class="form-check-input" />
                 <span asp-validation-for="ChargerGiven" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,3 +57,72 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const contactDropdown = document.getElementById('contact-name-dropdown');
+            const assetTagDropdown = document.getElementById('asset-tag-dropdown');
+
+            function populateContactDropdown() {
+                fetch('/api/userapi/all')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(contacts => { // contacts is the ARRAY of data
+                        // Clear the "Loading" option
+                        contactDropdown.innerHTML = '<option value="">Select a Contact</option>';
+
+                        // FIX 1: Loop over the 'contacts' array, not the HTML element
+                        contacts.forEach(contact => {
+                            const option = document.createElement('option');
+
+                            // Use the property name from your JSON data (contact.name)
+                            option.value = contact.name;
+                            option.textContent = contact.name;
+
+                            contactDropdown.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching contacts:', error);
+                        contactDropdown.innerHTML = '<option value="">Error loading contacts</option>';
+                    });
+            }
+
+            function populateAssetTagDropdown() {
+                fetch('/api/computerAPI/all')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(computers => { // FIX 2: Named this 'computers' (plural) for clarity
+                        // Clear the "Loading" option
+                        assetTagDropdown.innerHTML = '<option value="">Select a Computer</option>';
+
+                        // FIX 3: Loop over the 'computers' array, and name the iteration variable 'computer'
+                        computers.forEach(computer => {
+                            const option = document.createElement('option');
+
+                            // FIX 4: Use the iteration variable 'computer' (singular) to access the properties
+                            option.value = computer.assetTag;
+                            option.textContent = computer.assetTag;
+
+                            assetTagDropdown.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching computers:', error);
+                        assetTagDropdown.innerHTML = '<option value="">Error loading computers</option>';
+                    });
+            }
+
+            populateContactDropdown();
+            populateAssetTagDropdown();
+        });
+    </script>
+}

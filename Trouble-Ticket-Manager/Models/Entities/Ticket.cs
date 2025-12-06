@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Trouble_Ticket_Manager.Models.Entities
 {
@@ -7,7 +6,6 @@ namespace Trouble_Ticket_Manager.Models.Entities
     {
         public int Id { get; set; }
         public int ContactId { get; set; }
-
         [Required]
         public User Contact { get; set; } = null!;
 

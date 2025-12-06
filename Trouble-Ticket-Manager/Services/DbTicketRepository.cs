@@ -62,33 +62,55 @@ namespace Trouble_Ticket_Manager.Services
             }
         }
 
-        public async Task<ICollection<TicketDTO>> ReadAllDtoAsync()
+        public async Task<ICollection<TicketReadAllDTO>> ReadAllDtoAsync()
         {
             return await _db.Tickets
-                .Include(t => t.Contact) // Still need to EAGER LOAD for the data
+                .Include(t => t.Contact)
                 .Include(t => t.TicketComputers)
-                    .ThenInclude(tc => tc.Computer) // Still need to EAGER LOAD the Computer
-                .Select(t => new TicketDTO
+                    .ThenInclude(tc => tc.Computer)
+                .Select(t => new TicketReadAllDTO
                 {
                     Id = t.Id,
-                    SubmittedAt = t.SubmittedAt,
                     IsResolved = t.IsResolved,
-                    // FLATTENING: pulling Contact Name directly into the DTO
                     ContactName = t.Contact.Name,
 
-                    // PROJECTING THE COLLECTION: mapping the EF entities to DTOs
-                    TicketComputers = t.TicketComputers.Select(tc => new TicketComputerDTO
-                    {
-                        // Assign join table properties here if any...
-                        Computer = new ComputerDTO
-                        {
-                            AssetTag = tc.Computer!.AssetTag,
-                            Model = tc.Computer.Model,
-                            UnderWarranty = tc.Computer.UnderWarranty
-                        }
-                    }).ToList()
+                    AssetTags = string.Join(", ",
+                        t.TicketComputers
+                           .Select(tc => tc.Computer!.AssetTag)
+                           .Where(tag => tag != null))
                 })
                 .ToListAsync();
         }
+        public async Task<TicketReadDTO?> ReadDtoAsync(int id)
+        {
+            var ticket = await _db.Tickets
+               .Include(t => t.Contact)
+               .Include(t => t.TicketComputers)
+                   .ThenInclude(tc => tc.Computer)
+               .Select(t => new TicketReadDTO
+               {
+                   Id = t.Id,
+                   SubmittedAt = t.SubmittedAt,
+                   IsResolved = t.IsResolved,
+                   ChargerGiven = t.ChargerGiven,
+                   ContactName = t.Contact.Name,
+                   AssetTags = string.Join(", ",
+                        t.TicketComputers
+                           .Select(tc => tc.Computer!.AssetTag)
+                           .Where(tag => tag != null)),
+                   TicketComputers = t.TicketComputers.Select(tc => new TicketComputerDTO
+                   {
+                       Computer = new ComputerDTO
+                       {
+                           AssetTag = tc.Computer!.AssetTag,
+                           Model = tc.Computer.Model,
+                           UnderWarranty = tc.Computer.UnderWarranty
+                       }
+                   }).ToList()
+               })
+               .FirstOrDefaultAsync(t => t.Id == id);
+            return ticket;
+        }
     }
+
 }

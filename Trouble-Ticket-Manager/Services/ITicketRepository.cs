@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Trouble_Ticket_Manager.Models.DTOs;
 using Trouble_Ticket_Manager.Models.Entities;
 
@@ -14,6 +10,7 @@ namespace Trouble_Ticket_Manager.Services
         Task<Ticket> CreateAsync(Ticket newTicket);
         Task UpdateAsync(int id, Ticket ticket);
         Task DeleteAsync(int id);
-        Task<ICollection<TicketDTO>> ReadAllDtoAsync();
+        Task<ICollection<TicketReadAllDTO>> ReadAllDtoAsync();
+        Task<TicketReadDTO?> ReadDtoAsync(int id);
     }
 }
