@@ -15,15 +15,11 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             
-            @* The List of selected tags must be passed to the controller, even if empty. *@
             @for (int i = 0; i < Model.SelectedAssetTags?.Count; i++)
             {
                 <input type="hidden" name="SelectedAssetTags" value="@Model.SelectedAssetTags[i]" />
             }
             
-            @* --------------------------------------------------------
-            * NEW/EXISTING CONTACT TOGGLE
-            * -------------------------------------------------------- *@
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input type="checkbox" id="create-new-user-checkbox" class="form-check-input" />
@@ -38,7 +34,7 @@
                     <input asp-for="NewContactName" class="form-control" />
                     <span asp-validation-for="NewContactName" class="text-danger"></span>
                 </div>
-                @* ... other new contact fields (Email, Building, Room) are correct ... *@
+                
                 <div class="form-group">
                     <label asp-for="NewContactEmail" class="control-label">Contact Email</label>
                     <input asp-for="NewContactEmail" class="form-control" />
@@ -58,7 +54,6 @@
 
             <div class="form-group" id="existing-contact-group">
                 <label asp-for="SelectedContactId" class="control-label">Contact</label>
-                @* The SelectedContactId value will pre-select the correct option once the JS populates the dropdown *@
                 <select asp-for="SelectedContactId" class="form-control" id="contact-name-dropdown">
                     <option value="0">-- Loading Contacts --</option>
                 </select>
@@ -96,20 +91,15 @@
             <div class="form-group" id="existing-computer-group">
                 <label class="control-label">Select Existing Computers</label>
                 
-                @* 💡 CRITICAL CHANGE: Replaced the <select> with the checkbox container div *@
                 <div id="asset-tag-checkbox-list" class="border p-3" style="max-height: 200px; overflow-y: auto;">
                     <p class="text-muted mb-0">Loading available computers...</p>
                 </div>
                 
-                @* The validation summary needs to match the new list property name *@
                 <span asp-validation-for="SelectedAssetTags" class="text-danger"></span>
             </div>
             
             <hr />
 
-            @* --------------------------------------------------------
-            * TICKET DETAILS
-            * -------------------------------------------------------- *@
             <div class="form-group">
                 <label asp-for="SubmittedAt" class="control-label">Submission Date</label>
                 <input asp-for="SubmittedAt" class="form-control" />
@@ -121,14 +111,14 @@
                 <span asp-validation-for="IssueDescription" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input asp-for="IsResolved" class="form-check-input" /> @Html.DisplayNameFor(model => model.IsResolved)
-                </label>
+                <label asp-for="IsResolved" class="form-check-label">Resolved?</label>
+                <input asp-for="IsResolved" class="form-check-input" />
+                <span asp-validation-for="IsResolved" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input asp-for="ChargerGiven" class="form-check-input" /> @Html.DisplayNameFor(model => model.ChargerGiven)
-                </label>
+                <label asp-for="ChargerGiven" class="form-check-label">Charger Provided?</label>
+                <input asp-for="ChargerGiven" class="form-check-input" />
+                <span asp-validation-for="ChargerGiven" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Save Changes" class="btn btn-primary" />
@@ -142,6 +132,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="module" src="~/js/ticketEdit.js"></script>
 }

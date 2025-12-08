@@ -58,6 +58,9 @@
                 </select>
                 <span asp-validation-for="SelectedContactId" class="text-danger"></span>
             </div>
+
+            <hr />
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input type="checkbox" id="create-new-computer-checkbox" class="form-check-input" />
@@ -99,7 +102,8 @@
                 <span asp-validation-for="SelectedAssetTags" class="text-danger"></span>
             </div>
 
-
+            <hr />
+            
             <div class="form-group">
                 <label asp-for="IssueDescription" class="control-label">Issue Description</label>
                 <input asp-for="IssueDescription" class="form-control" />
