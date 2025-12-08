@@ -39,19 +39,4 @@
 
 @section Scripts {
     <script type="module" src="~/js/ticketIndex.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('a[data-modal="details"]').on('click', function (e) {
-                e.preventDefault(); 
-
-                const ticketId = $(this).data('id');
-                const url = `/Ticket/DetailsPartial/${ticketId}`; 
-
-                $('#modal-content-container').load(url, function() {
-                    const modal = new bootstrap.Modal(document.getElementById('ticketDetailsModal'));
-                    modal.show();
-                });
-            });
-        });
-    </script>
 }
