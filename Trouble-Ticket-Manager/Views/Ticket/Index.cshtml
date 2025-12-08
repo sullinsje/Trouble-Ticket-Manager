@@ -4,23 +4,54 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h4>Ticket</h4>
+
+<div class="mb-3">
+    <a href="@Url.Action("Create", "Ticket")" class="btn btn-primary">
+        Create New Ticket
+    </a>
+</div>
+<div class="mb-3">
+    <a href="@Url.Action("ExportAll", "Ticket")" class="btn btn-success">
+        <i class="fas fa-file-excel"></i> Export All Tickets
+    </a>
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th> ID </th>
             <th> Contact Name </th>
+            <th> Asset Tag </th>
             <th> Date Submitted </th>
             <th> Resolved </th>
-            <th> Charger </th>
             <th> Actions </th>
         </tr>
     </thead>
     <tbody id="ticket-table-body"></tbody>
 </table>
+<div class="modal fade" id="ticketDetailsModal" tabindex="-1" aria-labelledby="ticketDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modal-content-container">
+            </div>
+    </div>
+</div>
 
 @section Scripts {
     <script type="module" src="~/js/ticketIndex.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('a[data-modal="details"]').on('click', function (e) {
+                e.preventDefault(); 
+
+                const ticketId = $(this).data('id');
+                const url = `/Ticket/DetailsPartial/${ticketId}`; 
+
+                $('#modal-content-container').load(url, function() {
+                    const modal = new bootstrap.Modal(document.getElementById('ticketDetailsModal'));
+                    modal.show();
+                });
+            });
+        });
+    </script>
 }

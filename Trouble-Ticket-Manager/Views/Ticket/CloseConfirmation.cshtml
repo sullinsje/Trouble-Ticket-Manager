@@ -1,0 +1,22 @@
+@using Trouble_Ticket_Manager.Models.Entities
+@model Ticket // Assuming your Ticket entity is used here
+
+@{
+    ViewData["Title"] = "Close Ticket Confirmation";
+}
+
+<h1>Close Ticket: @Model.Id</h1>
+
+<div class="alert alert-warning" role="alert">
+    Are you sure you want to close this ticket?
+    Closing sets the completion status to resolved.
+</div>
+
+<form id="closeTicketForm" data-ticket-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Yes, Close Ticket</button>
+    <a href="@Url.Action("Index", "Ticket")" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <script type="module" src="~/js/ticketClose.js"></script>
+}

@@ -21,11 +21,11 @@ public class Initializer
             return; // Database already seeded
         }
 
-        // Seed Users
-        var user1 = new User { Name = "Alice Smith", Email = "alice.s@company.com", Building = "A", Room = "101" };
-        var user2 = new User { Name = "Bob Jones", Email = "bob.j@company.com", Building = "B", Room = "202" };
+        // Seed Contacts
+        var contact1 = new Contact { Name = "Alice Smith", Email = "alice.s@company.com", Building = "A", Room = "101" };
+        var contact2 = new Contact { Name = "Bob Jones", Email = "bob.j@company.com", Building = "B", Room = "202" };
 
-        await _db.Users.AddRangeAsync(user1, user2);
+        await _db.Contacts.AddRangeAsync(contact1, contact2);
         await _db.SaveChangesAsync();
 
         // Seed Computers
@@ -34,7 +34,7 @@ public class Initializer
             AssetTag = "000000",
             ServiceTag = "SV12345",
             Model = "Dell XPS 13",
-            User = user1,
+            Contact = contact1,
             UnderWarranty = MockWarrantyChecker.GetMockWarranty("SV12345")
         };
         var compB = new Computer
@@ -42,7 +42,7 @@ public class Initializer
             AssetTag = "000001",
             ServiceTag = "SV67890",
             Model = "HP ProBook",
-            User = user2,
+            Contact = contact2,
             UnderWarranty = MockWarrantyChecker.GetMockWarranty("SV67890")
         };
 
@@ -52,24 +52,26 @@ public class Initializer
         // Seed Tickets
         var ticket1 = new Ticket
         {
-            ContactId = user1.Id, 
+            ContactId = contact1.Id, 
             SubmittedAt = DateTime.UtcNow.AddHours(-48),
             IsResolved = false,
+            ChargerGiven = false
         };
 
         var ticket2 = new Ticket
         {
-            ContactId = user2.Id,
+            ContactId = contact2.Id,
             SubmittedAt = DateTime.UtcNow.AddHours(-24),
             IsResolved = false,
-            ChargerGiven = true,
+            ChargerGiven = true
         };
 
         var ticket3 = new Ticket
         {
-            ContactId = user1.Id,
+            ContactId = contact1.Id,
             SubmittedAt = DateTime.UtcNow.AddHours(-12),
             IsResolved = true,
+            ChargerGiven = false
         };
 
 

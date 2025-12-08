@@ -1,5 +1,5 @@
 @using Trouble_Ticket_Manager.Models.ViewModels
-@model TicketVM
+@model TicketViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -11,30 +11,99 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="TicketAPI" asp-action="Create">
+        <form asp-controller="TicketAPI" asp-action="Create" id="createForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ContactName" class="control-label">Contact</label>
 
-                <select asp-for="ContactName" class="form-control" id="contact-name-dropdown">
-                    <option value="">-- Loading Contacts --</option>
-                </select>
+            <input type="hidden" asp-for="SubmittedAt" value="@DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")" />
 
-                <span asp-validation-for="ContactName" class="text-danger"></span>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" id="create-new-user-checkbox" class="form-check-input" />
+                    Create New Contact?
+                </label>
             </div>
-            <div class="form-group">
-                <label asp-for="AssetTag" class="control-label">Asset Tag</label>
 
-                <select asp-for="AssetTag" class="form-control" id="asset-tag-dropdown">
-                    <option value="">-- Loading Computers --</option>
-                </select>
+            <div class="form-group" id="new-contact-name-group" style="display:none;">
+                <p class="mt-2 text-info">Enter New Contact Details:</p>
 
-                <span asp-validation-for="AssetTag" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="NewContactName" class="control-label">Contact Name</label>
+                    <input asp-for="NewContactName" class="form-control" />
+                    <span asp-validation-for="NewContactName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NewContactEmail" class="control-label">Contact Email</label>
+                    <input asp-for="NewContactEmail" class="form-control" />
+                    <span asp-validation-for="NewContactEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NewContactBuilding" class="control-label">Contact Building</label>
+                    <input asp-for="NewContactBuilding" class="form-control" />
+                    <span asp-validation-for="NewContactBuilding" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NewContactRoom" class="control-label">Contact Room</label>
+                    <input asp-for="NewContactRoom" class="form-control" />
+                    <span asp-validation-for="NewContactRoom" class="text-danger"></span>
+                </div>
             </div>
+
+            <div class="form-group" id="existing-contact-group">
+                <label asp-for="SelectedContactId" class="control-label">Contact</label>
+                <select asp-for="SelectedContactId" class="form-control" id="contact-name-dropdown">
+                    <option value="0">-- Loading Contacts --</option>
+                </select>
+                <span asp-validation-for="SelectedContactId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" id="create-new-computer-checkbox" class="form-check-input" />
+                    Create New Computer?
+                </label>
+            </div>
+
+            <div id="new-computer-details-group" style="display:none;">
+                <p class="mt-2 text-info">Enter New Computer Details:</p>
+
+                <div class="form-group">
+                    <label asp-for="NewAssetTag" class="control-label">Asset Tag</label>
+                    <input asp-for="NewAssetTag" class="form-control" />
+                    <span asp-validation-for="NewAssetTag" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NewComputerServiceTag" class="control-label">Service Tag</label>
+                    <input asp-for="NewComputerServiceTag" class="form-control" />
+                    <span asp-validation-for="NewComputerServiceTag" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NewComputerModel" class="control-label">Model</label>
+                    <input asp-for="NewComputerModel" class="form-control" />
+                    <span asp-validation-for="NewComputerModel" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group" id="existing-computer-group">
+                <label class="control-label">Select Existing Computers</label>
+
+                <div id="asset-tag-checkbox-list" class="border p-3" style="max-height: 200px; overflow-y: auto;">
+                    <p class="text-muted mb-0">No computers loaded.</p>
+                </div>
+
+                <input type="hidden" name="SelectedAssetTags" value="" />
+
+                <span asp-validation-for="SelectedAssetTags" class="text-danger"></span>
+            </div>
+
+
             <div class="form-group">
-                <label asp-for="SubmittedAt" class="control-label">Submission Date</label>
-                <input asp-for="SubmittedAt" class="form-control" />
-                <span asp-validation-for="SubmittedAt" class="text-danger"></span>
+                <label asp-for="IssueDescription" class="control-label">Issue Description</label>
+                <input asp-for="IssueDescription" class="form-control" />
+                <span asp-validation-for="IssueDescription" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label asp-for="IsResolved" class="form-check-label">Resolved?</label>
@@ -58,71 +127,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const contactDropdown = document.getElementById('contact-name-dropdown');
-            const assetTagDropdown = document.getElementById('asset-tag-dropdown');
-
-            function populateContactDropdown() {
-                fetch('/api/userapi/all')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(contacts => { // contacts is the ARRAY of data
-                        // Clear the "Loading" option
-                        contactDropdown.innerHTML = '<option value="">Select a Contact</option>';
-
-                        // FIX 1: Loop over the 'contacts' array, not the HTML element
-                        contacts.forEach(contact => {
-                            const option = document.createElement('option');
-
-                            // Use the property name from your JSON data (contact.name)
-                            option.value = contact.name;
-                            option.textContent = contact.name;
-
-                            contactDropdown.appendChild(option);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching contacts:', error);
-                        contactDropdown.innerHTML = '<option value="">Error loading contacts</option>';
-                    });
-            }
-
-            function populateAssetTagDropdown() {
-                fetch('/api/computerAPI/all')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(computers => { // FIX 2: Named this 'computers' (plural) for clarity
-                        // Clear the "Loading" option
-                        assetTagDropdown.innerHTML = '<option value="">Select a Computer</option>';
-
-                        // FIX 3: Loop over the 'computers' array, and name the iteration variable 'computer'
-                        computers.forEach(computer => {
-                            const option = document.createElement('option');
-
-                            // FIX 4: Use the iteration variable 'computer' (singular) to access the properties
-                            option.value = computer.assetTag;
-                            option.textContent = computer.assetTag;
-
-                            assetTagDropdown.appendChild(option);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching computers:', error);
-                        assetTagDropdown.innerHTML = '<option value="">Error loading computers</option>';
-                    });
-            }
-
-            populateContactDropdown();
-            populateAssetTagDropdown();
-        });
-    </script>
+    <script type="module" src="~/js/ticketCreate.js"></script>
 }

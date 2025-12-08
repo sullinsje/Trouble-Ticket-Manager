@@ -6,21 +6,21 @@ namespace Trouble_Ticket_Manager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserAPIController : ControllerBase
+    public class ContactAPIController : ControllerBase
     {
-        private readonly IUserRepository _userRepo;
+        private readonly IContactRepository _contactRepo;
 
-        public UserAPIController(IUserRepository userRepo)
+        public ContactAPIController(IContactRepository contactRepo)
         {
-            _userRepo = userRepo;
+            _contactRepo = contactRepo;
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create(User newUser)
+        public async Task<IActionResult> Create(Contact newContact)
         {
             if (ModelState.IsValid)
             {
-                await _userRepo.CreateAsync(newUser);
+                await _contactRepo.CreateAsync(newContact);
                 return Ok();
             }
             return NotFound();
@@ -29,32 +29,32 @@ namespace Trouble_Ticket_Manager.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
-            var users = await _userRepo.ReadAllAsync();
-            return Ok(users);
+            var contacts = await _contactRepo.ReadAllAsync();
+            return Ok(contacts);
         }
 
         [HttpGet("one/{id}")]
         public async Task<IActionResult> GetOne(int id)
         {
-            var user = await _userRepo.ReadAsync(id);
-            if (user == null)
+            var contact = await _contactRepo.ReadAsync(id);
+            if (contact == null)
             {
                 return NotFound();
             }
-            return Ok(user);
+            return Ok(contact);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Update([FromForm] User user)
+        public async Task<IActionResult> Update([FromForm] Contact contact)
         {
-            await _userRepo.UpdateAsync(user.Id, user);
+            await _contactRepo.UpdateAsync(contact.Id, contact);
             return NoContent(); // 204 as per HTTP specification
         }
 
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _userRepo.DeleteAsync(id);
+            await _contactRepo.DeleteAsync(id);
             return NoContent(); // 204 as per HTTP specification
         }
     }

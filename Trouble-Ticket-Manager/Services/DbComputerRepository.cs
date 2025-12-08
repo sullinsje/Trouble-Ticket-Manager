@@ -6,11 +6,9 @@ namespace Trouble_Ticket_Manager.Services
     public class DbComputerRepository : IComputerRepository
     {
         private readonly ApplicationDbContext _db;
-        private readonly IUserRepository _userRepo;
-        public DbComputerRepository(ApplicationDbContext db, IUserRepository userRepo)
+        public DbComputerRepository(ApplicationDbContext db)
         {
             _db = db;
-            _userRepo = userRepo;
         }
 
         public async Task<Computer> CreateAsync(Computer newComputer)
@@ -35,14 +33,14 @@ namespace Trouble_Ticket_Manager.Services
         {
             return await _db.Computers
                 .Include(c => c.TicketComputers)
-                .Include(c => c.User)
+                .Include(c => c.Contact)
                 .ToListAsync();
         }
 
         public async Task<Computer?> ReadAsync(string assetTag)
         {
             return await _db.Computers
-                .Include(c => c.User)
+                .Include(c => c.Contact)
                 .Include(c => c.TicketComputers)
                 .FirstOrDefaultAsync(c => c.AssetTag == assetTag);
         }
@@ -55,7 +53,7 @@ namespace Trouble_Ticket_Manager.Services
                 existingComputer.AssetTag = computer.AssetTag;
                 existingComputer.ServiceTag = computer.ServiceTag;
                 existingComputer.Model = computer.Model;
-                existingComputer.UserId = computer.UserId;
+                existingComputer.Contact = computer.Contact;
                 existingComputer.UnderWarranty = computer.UnderWarranty;
 
                 await _db.SaveChangesAsync();

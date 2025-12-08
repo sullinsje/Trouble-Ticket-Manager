@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Trouble_Ticket_Manager.Models.Entities;
+using Trouble_Ticket_Manager.Models.ViewModels;
 using Trouble_Ticket_Manager.Services;
 
 namespace Trouble_Ticket_Manager.Controllers
@@ -16,7 +17,7 @@ namespace Trouble_Ticket_Manager.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromForm] Computer newComputer)
+        public async Task<IActionResult> Create([FromForm]Computer newComputer)
         {
             if (ModelState.IsValid)
             {
@@ -48,14 +49,14 @@ namespace Trouble_Ticket_Manager.Controllers
         public async Task<IActionResult> Update([FromForm] Computer computer)
         {
             await _computerRepo.UpdateAsync(computer.AssetTag, computer);
-            return NoContent(); // 204 as per HTTP specification
+            return NoContent();
         }
 
         [HttpDelete("delete/{assetTag}")]
         public async Task<IActionResult> Delete(string assetTag)
         {
             await _computerRepo.DeleteAsync(assetTag);
-            return NoContent(); // 204 as per HTTP specification
+            return NoContent();
         }
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Trouble_Ticket_Manager.Services;
 using NSwag.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,11 +14,37 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IComputerRepository, DbComputerRepository>();
 builder.Services.AddScoped<ITicketRepository, DbTicketRepository>();
-builder.Services.AddScoped<IUserRepository, DbUserRepository>();
+builder.Services.AddScoped<IContactRepository, DbContactRepository>();
 builder.Services.AddScoped<Initializer>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    // Configure other options as needed
+})
+.AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = context =>
+    {
+        // If the request accepts JSON or is identified as an AJAX request,
+        // return 401 Unauthorized instead of redirecting to the login page.
+        if (context.Request.Headers["Accept"].Contains("application/json") || 
+            context.Request.Headers["X-Requested-With"] == "XMLHttpRequest") 
+        {
+            context.Response.StatusCode = 401; 
+        }
+        else
+        {
+            context.Response.Redirect(context.RedirectUri);
+        }
+        return Task.CompletedTask;
+    };
+});
 
 var app = builder.Build();
 await SeedDataAsync(app);
@@ -33,12 +60,13 @@ if (!app.Environment.IsDevelopment())
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
-    app.UseSwaggerUi(); 
+    app.UseSwaggerUi();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -48,6 +76,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+app.MapRazorPages();
 
 app.Run();
 

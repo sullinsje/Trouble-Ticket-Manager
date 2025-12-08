@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Trouble_Ticket_Manager.Models.Entities;
-using Trouble_Ticket_Manager.Models.DTOs;
 
 namespace Trouble_Ticket_Manager.Services
 {
@@ -62,55 +61,15 @@ namespace Trouble_Ticket_Manager.Services
             }
         }
 
-        public async Task<ICollection<TicketReadAllDTO>> ReadAllDtoAsync()
+        public async Task<IEnumerable<Ticket>> ReadAllWithDetailsAsync()
         {
             return await _db.Tickets
                 .Include(t => t.Contact)
                 .Include(t => t.TicketComputers)
                     .ThenInclude(tc => tc.Computer)
-                .Select(t => new TicketReadAllDTO
-                {
-                    Id = t.Id,
-                    IsResolved = t.IsResolved,
-                    ContactName = t.Contact.Name,
-
-                    AssetTags = string.Join(", ",
-                        t.TicketComputers
-                           .Select(tc => tc.Computer!.AssetTag)
-                           .Where(tag => tag != null))
-                })
                 .ToListAsync();
         }
-        public async Task<TicketReadDTO?> ReadDtoAsync(int id)
-        {
-            var ticket = await _db.Tickets
-               .Include(t => t.Contact)
-               .Include(t => t.TicketComputers)
-                   .ThenInclude(tc => tc.Computer)
-               .Select(t => new TicketReadDTO
-               {
-                   Id = t.Id,
-                   SubmittedAt = t.SubmittedAt,
-                   IsResolved = t.IsResolved,
-                   ChargerGiven = t.ChargerGiven,
-                   ContactName = t.Contact.Name,
-                   AssetTags = string.Join(", ",
-                        t.TicketComputers
-                           .Select(tc => tc.Computer!.AssetTag)
-                           .Where(tag => tag != null)),
-                   TicketComputers = t.TicketComputers.Select(tc => new TicketComputerDTO
-                   {
-                       Computer = new ComputerDTO
-                       {
-                           AssetTag = tc.Computer!.AssetTag,
-                           Model = tc.Computer.Model,
-                           UnderWarranty = tc.Computer.UnderWarranty
-                       }
-                   }).ToList()
-               })
-               .FirstOrDefaultAsync(t => t.Id == id);
-            return ticket;
-        }
+
     }
 
 }

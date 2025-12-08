@@ -1,0 +1,82 @@
+@model Trouble_Ticket_Manager.Models.Entities.Ticket
+
+<div class="modal-header">
+    <h5 class="modal-title" id="ticketDetailsLabel">Ticket #@Model.Id Details</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+    <dl class="row">
+        <dt class="col-sm-4">Contact:</dt>
+        <dd class="col-sm-8">@(Model.Contact?.Name ?? "N/A")</dd>
+
+        <dt class="col-sm-4">Email:</dt>
+        <dd class="col-sm-8">@(Model.Contact?.Email ?? "N/A")</dd>
+
+        <dt class="col-sm-4">Computer(s):</dt>
+        <dd class="col-sm-8">
+            @{
+                // Check if the collection exists and has items
+                if (Model.TicketComputers != null && Model.TicketComputers.Any())
+                {
+                    // Use an unordered list for neat, stacked presentation
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var ticketComputer in Model.TicketComputers)
+                        {
+                            // Ensure the Computer navigation property is loaded (non-null assertion !)
+                            var computer = ticketComputer.Computer;
+                            if (computer != null)
+                            {
+                                <li>
+                                    <strong>@computer.AssetTag</strong> (@computer.Model)
+                                </li>
+                            }
+                            else
+                            {
+                                <li>*Computer data missing*</li>
+                            }
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No computers linked to this ticket.</p>
+                }
+            }
+
+
+        <dt class="col-sm-4">Issue:</dt>
+        <dd class="col-sm-8">
+            @{
+                // Concatenate all Asset Tags from the join table
+                var singleIssueDescription = Model.TicketComputers!
+                .Select(tc => tc.IssueDescription)
+                .FirstOrDefault();
+            }
+            @singleIssueDescription
+        </dd>
+
+        <dt class="col-sm-4">Submitted At:</dt>
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.SubmittedAt)</dd>
+
+        <dt class="col-sm-4">Resolved?</dt>
+        <dd class="col-sm-8">@(Model.IsResolved == true ? "Yes" : "No")</dd>
+
+        <dt class="col-sm-4">Charger Given?</dt>
+        <dd class="col-sm-8">@(Model.ChargerGiven == true ? "Yes" : "No")</dd>
+
+        <dt class="col-sm-4">Building:</dt>
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.Contact.Building)</dd>
+
+        <dt class="col-sm-4">Room:</dt>
+        <dd class="col-sm-8">@Html.DisplayFor(model => model.Contact.Room)</dd>
+
+    </dl>
+</div>
+
+<div class="modal-footer">
+    <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+        Edit
+    </a>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>

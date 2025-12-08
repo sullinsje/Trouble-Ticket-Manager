@@ -7,7 +7,7 @@ namespace Trouble_Ticket_Manager.Models.Entities
         public int Id { get; set; }
         public int ContactId { get; set; }
         [Required]
-        public User Contact { get; set; } = null!;
+        public Contact Contact { get; set; } = null!;
 
         public DateTime SubmittedAt { get; set; }
         public bool? IsResolved { get; set; }

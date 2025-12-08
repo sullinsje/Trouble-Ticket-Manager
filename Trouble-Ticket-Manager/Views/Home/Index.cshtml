@@ -1,8 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Index";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    
+    <div class="text-center mb-5">
+        <h1 class="display-4 font-weight-bold text-primary">💻 IT Support & Asset Hub</h1>
+        <p class="lead text-muted">A quick overview of active tickets and managed assets.</p>
+    </div>
+
+    <hr />
+
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            
+            <a asp-controller="Ticket" asp-action="Create" class="btn btn-success btn-lg shadow mb-3 mb-md-0 mx-2" style="min-width: 250px;">
+                <i class="fas fa-plus-circle"></i> Create New Ticket
+            </a>
+            
+            <a asp-controller="Ticket" asp-action="Index" class="btn btn-info btn-lg shadow mx-2" style="min-width: 250px;">
+                <i class="fas fa-desktop"></i> View All Tickets
+            </a>
+            
+        </div>
+    </div>
+    
+    <hr />
+
 </div>
