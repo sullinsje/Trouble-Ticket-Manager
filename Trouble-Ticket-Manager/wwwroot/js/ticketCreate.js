@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function populateContactDropdown() {
-        fetch('/api/userapi/all')
+        fetch('/api/contactapi/all')
             .then(response => {
                 if (!response.ok) { throw new Error('Network response was not ok'); }
                 return response.json();

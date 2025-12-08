@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const computerModelInput = document.getElementById('NewComputerModel');
 
     function populateContactDropdown() {
-        fetch('/api/userapi/all')
+        fetch('/api/contactapi/all')
             .then(response => response.json())
             .then(contacts => {
                 const selectedContactId = contactDropdown.value;
